@@ -5,10 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use App\Models\klientu_sarasas;
+use Carbon\Carbon;
 
 class MainController extends Controller
 {
     public function index() {
+
+        klientu_sarasas::where('created_at', '<', Carbon::now()->subDays(21))->delete();
         $klientu_sarasas = klientu_sarasas::orderBy('created_at', 'desc')->paginate(5);
         return view('home')->with('klientu_sarasas', $klientu_sarasas);
     }
